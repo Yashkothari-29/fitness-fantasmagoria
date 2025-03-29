@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,13 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				cyber: {
+					purple: '#8B5CF6',
+					blue: '#0EA5E9',
+					orange: '#F97316',
+					pink: '#D946EF',
+					green: '#10B981'
 				}
 			},
 			borderRadius: {
@@ -70,25 +78,49 @@ export default {
 			},
 			keyframes: {
 				'accordion-down': {
-					from: {
-						height: '0'
-					},
-					to: {
-						height: 'var(--radix-accordion-content-height)'
-					}
+					from: { height: '0' },
+					to: { height: 'var(--radix-accordion-content-height)' }
 				},
 				'accordion-up': {
-					from: {
-						height: 'var(--radix-accordion-content-height)'
+					from: { height: 'var(--radix-accordion-content-height)' },
+					to: { height: '0' }
+				},
+				'pulse-glow': {
+					'0%, 100%': { 
+						boxShadow: '0 0 10px 2px rgba(139, 92, 246, 0.3)' 
 					},
-					to: {
-						height: '0'
+					'50%': { 
+						boxShadow: '0 0 20px 5px rgba(139, 92, 246, 0.5)' 
 					}
+				},
+				'float': {
+					'0%, 100%': { transform: 'translateY(0)' },
+					'50%': { transform: 'translateY(-10px)' }
+				},
+				'heart-beat': {
+					'0%, 100%': { transform: 'scale(1)' },
+					'15%': { transform: 'scale(1.2)' },
+					'30%': { transform: 'scale(1)' },
+					'45%': { transform: 'scale(1.1)' },
+					'60%': { transform: 'scale(1)' }
+				},
+				'footprint-appear': {
+					'0%': { opacity: '0', transform: 'translateY(5px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' }
+				},
+				'melt': {
+					'0%': { height: '100%', opacity: '1' },
+					'100%': { height: '0%', opacity: '0.3' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'pulse-glow': 'pulse-glow 2s infinite',
+				'float': 'float 3s ease-in-out infinite',
+				'heart-beat': 'heart-beat 1.5s infinite',
+				'footprint-appear': 'footprint-appear 0.3s ease-out',
+				'melt': 'melt 3s ease-in-out'
 			}
 		}
 	},
