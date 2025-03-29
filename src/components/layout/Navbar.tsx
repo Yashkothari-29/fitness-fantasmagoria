@@ -40,7 +40,7 @@ const Navbar = () => {
                 <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-64">
+            <SheetContent side="left" className="w-72">
               <SheetHeader className="mb-6">
                 <SheetTitle className="text-xl font-bold flex items-center">
                   <span className="bg-gradient-to-r from-cyber-purple to-cyber-blue bg-clip-text text-transparent">
@@ -142,7 +142,7 @@ const Navbar = () => {
             </Avatar>
             
             <div className="hidden md:block">
-              <div className="text-sm font-medium">User</div>
+              <div className="text-sm font-medium truncate">User</div>
               <div className="text-xs text-muted-foreground">Level {fitnessData.level}</div>
             </div>
           </div>

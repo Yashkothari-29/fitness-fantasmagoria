@@ -157,7 +157,7 @@ const WorkoutTimeline3D: React.FC = () => {
       <CardContent>
         <div className="relative">
           {/* Timeline track */}
-          <div className="absolute left-1/2 top-0 h-full w-1 -translate-x-1/2 bg-gradient-to-b from-cyber-purple via-cyber-blue to-background rounded-full" />
+          <div className="absolute left-6 md:left-1/2 top-0 h-full w-1 -translate-x-1/2 bg-gradient-to-b from-cyber-purple via-cyber-blue to-background rounded-full" />
           
           {/* Workout items */}
           <div className="space-y-8 py-4">
@@ -172,7 +172,7 @@ const WorkoutTimeline3D: React.FC = () => {
                 {/* Timeline dot */}
                 <motion.div 
                   className={cn(
-                    "absolute left-1/2 top-4 h-4 w-4 -translate-x-1/2 rounded-full shadow-glow z-10",
+                    "absolute left-6 md:left-1/2 top-4 h-4 w-4 -translate-x-1/2 rounded-full shadow-glow z-10",
                     workout.completed ? "bg-cyber-purple" : "bg-gray-400"
                   )}
                   initial={{ scale: 1 }}
@@ -183,8 +183,8 @@ const WorkoutTimeline3D: React.FC = () => {
                 {/* Workout card */}
                 <motion.div
                   className={cn(
-                    "ml-auto w-[calc(50%-20px)] p-4 rounded-lg glass-morphism border-l-4",
-                    isMobile ? "w-[calc(100%-20px)] ml-[20px]" : (index % 2 === 0 ? "ml-[calc(50%+20px)]" : "mr-[calc(50%+20px)]"),
+                    "ml-[30px] md:ml-auto w-[calc(100%-30px)] md:w-[calc(50%-20px)] p-3 md:p-4 rounded-lg glass-morphism border-l-4",
+                    isMobile ? "" : (index % 2 === 0 ? "md:ml-[calc(50%+20px)]" : "md:mr-[calc(50%+20px)]"),
                     workout.completed ? "border-l-cyber-purple" : "border-l-gray-400"
                   )}
                   whileHover={{ 
@@ -200,7 +200,7 @@ const WorkoutTimeline3D: React.FC = () => {
                     <div className="flex items-center">
                       <motion.div
                         className={cn(
-                          "p-2 rounded-full mr-3 bg-gradient-to-br",
+                          "p-2 rounded-full mr-2 md:mr-3 bg-gradient-to-br",
                           getIntensityColor(workout.intensity)
                         )}
                         whileHover={{ rotate: 360 }}
@@ -208,26 +208,26 @@ const WorkoutTimeline3D: React.FC = () => {
                       >
                         {getTypeIcon(workout.type)}
                       </motion.div>
-                      <div>
-                        <h3 className="font-medium text-foreground">{workout.name}</h3>
-                        <p className="text-xs text-muted-foreground">
+                      <div className="max-w-[calc(100%-60px)]">
+                        <h3 className="font-medium text-foreground text-sm md:text-base truncate">{workout.name}</h3>
+                        <p className="text-xs text-muted-foreground truncate">
                           {new Date(workout.date).toLocaleDateString()} • {new Date(workout.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-center text-sm">
-                      <Timer className="h-4 w-4 mr-1" />
+                    <div className="flex items-center text-xs md:text-sm whitespace-nowrap">
+                      <Timer className="h-3 w-3 md:h-4 md:w-4 mr-1" />
                       <span>{workout.duration} min</span>
                     </div>
                   </div>
                   
                   <div className="grid grid-cols-2 gap-2 mt-3">
-                    <div className="flex items-center text-sm">
-                      <Flame className="h-4 w-4 mr-1 text-cyber-orange" />
+                    <div className="flex items-center text-xs md:text-sm">
+                      <Flame className="h-3 w-3 md:h-4 md:w-4 mr-1 text-cyber-orange" />
                       <span>{workout.calories} kcal</span>
                     </div>
-                    <div className="flex items-center text-sm">
-                      <HeartPulse className="h-4 w-4 mr-1 text-red-500" />
+                    <div className="flex items-center text-xs md:text-sm">
+                      <HeartPulse className="h-3 w-3 md:h-4 md:w-4 mr-1 text-red-500" />
                       <span>{workout.heartRate} bpm</span>
                     </div>
                   </div>
@@ -277,15 +277,15 @@ const WorkoutTimeline3D: React.FC = () => {
             className="mt-8 p-4 rounded-lg border border-cyber-purple/30 bg-background/50 backdrop-blur-md"
           >
             <div className="flex justify-between items-start mb-4">
-              <div>
-                <h3 className="text-xl font-bold">{selectedWorkout.name}</h3>
-                <p className="text-sm text-muted-foreground">
+              <div className="mr-2">
+                <h3 className="text-lg md:text-xl font-bold truncate">{selectedWorkout.name}</h3>
+                <p className="text-xs md:text-sm text-muted-foreground">
                   {new Date(selectedWorkout.date).toLocaleDateString()} • {new Date(selectedWorkout.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </p>
               </div>
               <div 
                 className={cn(
-                  "p-2 rounded-full bg-gradient-to-br",
+                  "p-2 rounded-full bg-gradient-to-br flex-shrink-0",
                   getIntensityColor(selectedWorkout.intensity)
                 )}
               >
@@ -293,26 +293,26 @@ const WorkoutTimeline3D: React.FC = () => {
               </div>
             </div>
             
-            <div className="grid grid-cols-3 gap-4 mb-4">
-              <div className="p-3 rounded-lg bg-background/80 border border-border">
+            <div className="grid grid-cols-3 gap-2 md:gap-4 mb-4">
+              <div className="p-2 md:p-3 rounded-lg bg-background/80 border border-border">
                 <p className="text-xs text-muted-foreground">Duration</p>
                 <div className="flex items-baseline">
-                  <span className="text-2xl font-bold">{selectedWorkout.duration}</span>
-                  <span className="text-sm ml-1">min</span>
+                  <span className="text-lg md:text-2xl font-bold">{selectedWorkout.duration}</span>
+                  <span className="text-xs md:text-sm ml-1">min</span>
                 </div>
               </div>
-              <div className="p-3 rounded-lg bg-background/80 border border-border">
+              <div className="p-2 md:p-3 rounded-lg bg-background/80 border border-border">
                 <p className="text-xs text-muted-foreground">Calories</p>
                 <div className="flex items-baseline">
-                  <span className="text-2xl font-bold">{selectedWorkout.calories}</span>
-                  <span className="text-sm ml-1">kcal</span>
+                  <span className="text-lg md:text-2xl font-bold">{selectedWorkout.calories}</span>
+                  <span className="text-xs md:text-sm ml-1">kcal</span>
                 </div>
               </div>
-              <div className="p-3 rounded-lg bg-background/80 border border-border">
-                <p className="text-xs text-muted-foreground">Avg Heart Rate</p>
+              <div className="p-2 md:p-3 rounded-lg bg-background/80 border border-border">
+                <p className="text-xs text-muted-foreground">Heart Rate</p>
                 <div className="flex items-baseline">
-                  <span className="text-2xl font-bold">{selectedWorkout.heartRate}</span>
-                  <span className="text-sm ml-1">bpm</span>
+                  <span className="text-lg md:text-2xl font-bold">{selectedWorkout.heartRate}</span>
+                  <span className="text-xs md:text-sm ml-1">bpm</span>
                 </div>
               </div>
             </div>

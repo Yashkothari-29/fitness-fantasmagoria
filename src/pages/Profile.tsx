@@ -25,7 +25,7 @@ const Profile = () => {
       
       <main className="container py-6">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold tracking-tight">Profile</h1>
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Profile</h1>
           <p className="text-muted-foreground mt-1">Manage your profile and achievements</p>
         </div>
         
@@ -34,10 +34,10 @@ const Profile = () => {
             <Card className="cyber-card">
               <CardContent className="pt-6">
                 <div className="flex flex-col items-center">
-                  <Avatar className="h-24 w-24 mb-4">
+                  <Avatar className="h-20 w-20 md:h-24 md:w-24 mb-4">
                     <AvatarImage src="/avatar-1.png" alt="User" />
                     <AvatarFallback className="bg-cyber-purple text-white">
-                      <User className="h-12 w-12" />
+                      <User className="h-10 w-10 md:h-12 md:w-12" />
                     </AvatarFallback>
                   </Avatar>
                   
@@ -54,15 +54,15 @@ const Profile = () => {
                   
                   <div className="w-full grid grid-cols-3 gap-2 mb-6">
                     <div className="flex flex-col items-center p-2 bg-secondary rounded-md">
-                      <span className="text-lg font-bold">{fitnessData.steps.toLocaleString()}</span>
+                      <span className="text-base md:text-lg font-bold">{fitnessData.steps.toLocaleString()}</span>
                       <span className="text-xs text-muted-foreground">Steps</span>
                     </div>
                     <div className="flex flex-col items-center p-2 bg-secondary rounded-md">
-                      <span className="text-lg font-bold">{fitnessData.calories.toLocaleString()}</span>
+                      <span className="text-base md:text-lg font-bold">{fitnessData.calories.toLocaleString()}</span>
                       <span className="text-xs text-muted-foreground">Calories</span>
                     </div>
                     <div className="flex flex-col items-center p-2 bg-secondary rounded-md">
-                      <span className="text-lg font-bold">{fitnessData.activeMinutes}</span>
+                      <span className="text-base md:text-lg font-bold">{fitnessData.activeMinutes}</span>
                       <span className="text-xs text-muted-foreground">Minutes</span>
                     </div>
                   </div>
@@ -89,7 +89,7 @@ const Profile = () => {
           </div>
           
           <div className="lg:col-span-2">
-            <Tabs defaultValue="achievements">
+            <Tabs defaultValue="achievements" className="w-full">
               <TabsList className="grid w-full grid-cols-2 mb-6">
                 <TabsTrigger value="achievements">Achievements</TabsTrigger>
                 <TabsTrigger value="cybernetics">Cybernetic Upgrades</TabsTrigger>
@@ -103,17 +103,17 @@ const Profile = () => {
                   <CardContent>
                     <div className="space-y-4">
                       {achievements.map((achievement, index) => (
-                        <div key={index} className="border border-border rounded-lg p-4">
+                        <div key={index} className="border border-border rounded-lg p-3 md:p-4">
                           <div className="flex items-start">
-                            <div className="bg-primary/10 p-2 rounded-md mr-3">
+                            <div className="bg-primary/10 p-2 rounded-md mr-3 flex-shrink-0">
                               {achievement.icon}
                             </div>
-                            <div className="flex-1">
-                              <h3 className="font-medium mb-1">{achievement.name}</h3>
-                              <p className="text-sm text-muted-foreground mb-2">{achievement.description}</p>
+                            <div className="flex-1 min-w-0">
+                              <h3 className="font-medium mb-1 truncate">{achievement.name}</h3>
+                              <p className="text-xs md:text-sm text-muted-foreground mb-2 line-clamp-2">{achievement.description}</p>
                               <div className="flex items-center">
                                 <Progress value={achievement.progress} className="h-2 flex-1 mr-3" />
-                                <span className="text-xs font-medium">{achievement.progress}%</span>
+                                <span className="text-xs font-medium whitespace-nowrap">{achievement.progress}%</span>
                               </div>
                             </div>
                           </div>
@@ -139,19 +139,19 @@ const Profile = () => {
                       ].map((upgrade, index) => (
                         <div 
                           key={index} 
-                          className={`border border-border rounded-lg p-4 ${
+                          className={`border border-border rounded-lg p-3 md:p-4 ${
                             upgrade.unlocked 
                               ? 'bg-gradient-to-br from-cyber-green/10 to-cyber-blue/10 border-cyber-green/30' 
                               : 'opacity-60'
                           }`}
                         >
-                          <h3 className="font-medium mb-1 flex items-center">
-                            {upgrade.name}
+                          <h3 className="font-medium mb-1 flex items-center text-sm md:text-base">
+                            <span className="truncate mr-2">{upgrade.name}</span>
                             {upgrade.unlocked && (
-                              <span className="ml-2 text-xs bg-cyber-green text-white px-2 py-0.5 rounded-full">Active</span>
+                              <span className="ml-auto text-xs bg-cyber-green text-white px-2 py-0.5 rounded-full flex-shrink-0">Active</span>
                             )}
                           </h3>
-                          <p className="text-sm text-muted-foreground mb-2">{upgrade.description}</p>
+                          <p className="text-xs md:text-sm text-muted-foreground mb-2 line-clamp-2">{upgrade.description}</p>
                           <div className="flex justify-between items-center">
                             <span className="text-xs">Required Level: {upgrade.level}</span>
                             {upgrade.unlocked ? (
@@ -166,13 +166,13 @@ const Profile = () => {
                     
                     <div className="mt-6">
                       <h3 className="text-sm font-medium mb-3">Upcoming Upgrades</h3>
-                      <div className="border border-border rounded-lg p-4 bg-card/50">
+                      <div className="border border-border rounded-lg p-3 md:p-4 bg-card/50">
                         <div className="flex items-center justify-between">
-                          <div>
-                            <h4 className="font-medium">Neural Interface</h4>
-                            <p className="text-sm text-muted-foreground">Mental focus and cognitive enhancement</p>
+                          <div className="mr-2 flex-1 min-w-0">
+                            <h4 className="font-medium truncate">Neural Interface</h4>
+                            <p className="text-xs md:text-sm text-muted-foreground truncate">Mental focus and cognitive enhancement</p>
                           </div>
-                          <div className="text-sm font-medium text-cyber-purple">Level 25</div>
+                          <div className="text-sm font-medium text-cyber-purple whitespace-nowrap">Level 25</div>
                         </div>
                       </div>
                     </div>
