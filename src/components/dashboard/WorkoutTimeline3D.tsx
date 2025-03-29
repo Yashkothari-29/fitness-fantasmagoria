@@ -1,10 +1,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Award, Flame, HeartPulse, Dumbbell, Timer } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Award, Flame, HeartPulse, Dumbbell, Timer, ChevronRight } from 'lucide-react';
 import { useFitness } from '@/contexts/FitnessContext';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 type Workout = {
   id: string;
@@ -120,6 +123,11 @@ const WorkoutTimeline3D: React.FC = () => {
   const [hoveredWorkout, setHoveredWorkout] = useState<string | null>(null);
   const { fitnessData } = useFitness();
   const [workouts, setWorkouts] = useState<Workout[]>(mockWorkouts);
+  const [displayLimit, setDisplayLimit] = useState<number>(3);
+  const isMobile = useIsMobile();
+  
+  const displayedWorkouts = workouts.slice(0, displayLimit);
+  const hasMoreWorkouts = workouts.length > displayLimit;
 
   useEffect(() => {
     // In a real app, you would fetch this data from an API
@@ -153,7 +161,7 @@ const WorkoutTimeline3D: React.FC = () => {
           
           {/* Workout items */}
           <div className="space-y-8 py-4">
-            {workouts.map((workout, index) => (
+            {displayedWorkouts.map((workout, index) => (
               <motion.div
                 key={workout.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -176,7 +184,7 @@ const WorkoutTimeline3D: React.FC = () => {
                 <motion.div
                   className={cn(
                     "ml-auto w-[calc(50%-20px)] p-4 rounded-lg glass-morphism border-l-4",
-                    index % 2 === 0 ? "ml-[calc(50%+20px)]" : "mr-[calc(50%+20px)]",
+                    isMobile ? "w-[calc(100%-20px)] ml-[20px]" : (index % 2 === 0 ? "ml-[calc(50%+20px)]" : "mr-[calc(50%+20px)]"),
                     workout.completed ? "border-l-cyber-purple" : "border-l-gray-400"
                   )}
                   whileHover={{ 
@@ -247,6 +255,20 @@ const WorkoutTimeline3D: React.FC = () => {
           </div>
         </div>
         
+        {/* See More Button */}
+        {hasMoreWorkouts && (
+          <div className="mt-6 text-center">
+            <Button 
+              variant="outline" 
+              onClick={() => setDisplayLimit(prev => prev + 3)}
+              className="group"
+            >
+              <span>See More</span>
+              <ChevronRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </div>
+        )}
+        
         {/* Detailed view when workout is selected */}
         {selectedWorkout && (
           <motion.div
@@ -305,6 +327,14 @@ const WorkoutTimeline3D: React.FC = () => {
           </motion.div>
         )}
       </CardContent>
+      <CardFooter className="flex justify-center pt-0">
+        <Link to="/profile">
+          <Button variant="link" className="text-cyber-purple flex items-center">
+            <span>View Full Workout History</span>
+            <ChevronRight className="h-4 w-4 ml-1" />
+          </Button>
+        </Link>
+      </CardFooter>
     </Card>
   );
 };

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Navbar from '@/components/layout/Navbar';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,8 +6,10 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { BarChart, Bar, XAxis, ResponsiveContainer, Tooltip } from 'recharts';
-import { Users, Trophy, Medal, ArrowUp, ArrowDown, Video, User, Flag } from 'lucide-react';
+import { Users, Trophy, Medal, ArrowUp, ArrowDown, Video, User, Flag, Crown, Award } from 'lucide-react';
 import { useFitness } from '@/contexts/FitnessContext';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { motion } from 'framer-motion';
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
@@ -24,6 +25,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 const Social = () => {
   const { fitnessData } = useFitness();
   const { friends } = fitnessData;
+  const isMobile = useIsMobile();
   
   // Sort friends by steps in descending order
   const sortedFriends = [...friends].sort((a, b) => b.steps - a.steps);
@@ -46,11 +48,23 @@ const Social = () => {
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
           <div className="lg:col-span-2">
-            <Card className="cyber-card h-full">
-              <CardHeader>
+            <Card className="cyber-card h-full overflow-hidden">
+              <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
-                  <CardTitle>24h Step Challenge</CardTitle>
-                  <Trophy className="h-5 w-5 text-yellow-500" />
+                  <div className="flex items-center">
+                    <motion.div 
+                      className="bg-gradient-to-r from-yellow-400 to-amber-600 p-2 rounded-full mr-3 shadow-glow" 
+                      initial={{ rotate: 0 }}
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 2, repeat: Infinity, repeatType: "loop", ease: "linear" }}
+                    >
+                      <Trophy className="h-5 w-5 text-white" />
+                    </motion.div>
+                    <CardTitle>24h Step Challenge</CardTitle>
+                  </div>
+                  <div className="text-sm font-medium bg-gradient-to-r from-cyber-purple to-cyber-blue bg-clip-text text-transparent">
+                    Live Results
+                  </div>
                 </div>
               </CardHeader>
               <CardContent>
@@ -76,19 +90,36 @@ const Social = () => {
                           style: { fontSize: '12px' }
                         }}
                         background={{ fill: 'rgba(255, 255, 255, 0.1)' }}
+                        animationDuration={1500}
                       />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
                 
                 <div className="mt-6">
-                  <h3 className="text-sm font-medium mb-4">Live Leaderboard</h3>
+                  <h3 className="text-sm font-medium mb-4 flex items-center">
+                    <Crown className="h-4 w-4 mr-2 text-yellow-500" />
+                    <span>Live Leaderboard</span>
+                  </h3>
                   <div className="space-y-4">
                     {sortedFriends.slice(0, 3).map((friend, index) => (
-                      <div key={index} className="flex items-center">
+                      <motion.div 
+                        key={index} 
+                        className="flex items-center"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                      >
                         <div className="mr-3 flex items-center justify-center w-6">
                           {index === 0 ? (
-                            <Trophy className="h-5 w-5 text-yellow-500" />
+                            <div className="relative">
+                              <Trophy className="h-5 w-5 text-yellow-500" />
+                              <motion.div 
+                                className="absolute -inset-1 rounded-full bg-yellow-500/20"
+                                animate={{ scale: [1, 1.2, 1] }}
+                                transition={{ duration: 2, repeat: Infinity }}
+                              />
+                            </div>
                           ) : index === 1 ? (
                             <Medal className="h-5 w-5 text-gray-400" />
                           ) : (
@@ -104,17 +135,44 @@ const Social = () => {
                             <div className="font-medium">{friend.name}</div>
                             <div className="text-sm font-medium">{friend.steps.toLocaleString()} steps</div>
                           </div>
-                          <Progress 
-                            value={(friend.steps / 15000) * 100} 
-                            className="h-1"
-                            style={{
-                              background: index === 0 ? 'linear-gradient(to right, #FCD34D, #F59E0B)' : undefined
-                            }}
-                          />
+                          <div className="relative h-1 w-full bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                            <motion.div
+                              className={`absolute h-full rounded-full ${index === 0 ? 
+                                'bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-400' : 
+                                'bg-gradient-to-r from-cyber-purple to-cyber-blue'}`}
+                              initial={{ width: 0 }}
+                              animate={{ width: `${(friend.steps / 15000) * 100}%` }}
+                              transition={{ duration: 1, delay: 0.2 + (index * 0.1) }}
+                            />
+                          </div>
                         </div>
-                      </div>
+                      </motion.div>
                     ))}
                   </div>
+                </div>
+                
+                <div className="mt-8 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 p-4 rounded-lg border border-blue-500/20">
+                  <div className="flex justify-between items-center mb-3">
+                    <div className="font-medium">Challenge ends in:</div>
+                    <div className="text-sm font-medium text-cyber-blue">12:42:16</div>
+                  </div>
+                  <div className="flex space-x-2 mb-3">
+                    {Array.from({ length: 4 }).map((_, index) => (
+                      <motion.div 
+                        key={index}
+                        className="w-full h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden"
+                        initial={{ opacity: 0.5 }}
+                        animate={{ opacity: [0.5, 1, 0.5] }}
+                        transition={{ duration: 2, delay: index * 0.5, repeat: Infinity }}
+                      >
+                        <div className="h-full bg-cyber-blue rounded-full" style={{ width: `${25 * (4-index)}%` }} />
+                      </motion.div>
+                    ))}
+                  </div>
+                  <Button variant="default" className="w-full">
+                    <Award className="h-4 w-4 mr-2" />
+                    Join Challenge
+                  </Button>
                 </div>
               </CardContent>
             </Card>
