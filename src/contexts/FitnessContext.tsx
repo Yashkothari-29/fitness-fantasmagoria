@@ -1,5 +1,6 @@
 
 import React, { createContext, useContext, useState } from 'react';
+import { getCoachMessages } from '../services/fitnessDataService';
 
 // This would come from an API in a real app
 const initialFitnessData = {
@@ -8,7 +9,7 @@ const initialFitnessData = {
   calories: 1842,
   xp: 2540,
   level: 12,
-  streak: 7, // Adding the streak property
+  streak: 7,
   levelProgress: 0.65,
   stepsGoal: 10000,
   caloriesGoal: 2500,
@@ -41,6 +42,12 @@ const initialFitnessData = {
     { time: '16:00', value: 78 },
     { time: '17:00', value: 72 },
   ],
+  // Adding the missing properties
+  dailyHeartRate: Array.from({ length: 24 }, (_, i) => ({
+    hour: i,
+    value: Math.floor(Math.random() * (100 - 60) + 60), // Random heart rate between 60-100
+  })),
+  stepsHeatmap: Array.from({ length: 36 }, () => Math.floor(Math.random() * 100)), // Random step values for heatmap
   friends: [
     { name: 'Emma', steps: 10245, level: 14, avatar: '/avatar-2.png' },
     { name: 'John', steps: 9321, level: 11, avatar: '/avatar-3.png' },
@@ -52,12 +59,18 @@ const initialFitnessData = {
 type FitnessContextType = {
   fitnessData: typeof initialFitnessData;
   updateSteps: (steps: number) => void;
+  // Adding the missing properties and methods for AiCoach
+  coachMessage: string;
+  coachPersonality: 'kind' | 'snarky';
+  toggleCoachPersonality: () => void;
 };
 
 const FitnessContext = createContext<FitnessContextType | null>(null);
 
 export const FitnessProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [fitnessData, setFitnessData] = useState(initialFitnessData);
+  const [coachPersonality, setCoachPersonality] = useState<'kind' | 'snarky'>('kind');
+  const [coachMessage, setCoachMessage] = useState<string>(getCoachMessages('kind'));
   
   const updateSteps = (steps: number) => {
     setFitnessData(prev => ({
@@ -67,8 +80,22 @@ export const FitnessProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }));
   };
   
+  const toggleCoachPersonality = () => {
+    setCoachPersonality(prev => {
+      const newPersonality = prev === 'kind' ? 'snarky' : 'kind';
+      setCoachMessage(getCoachMessages(newPersonality));
+      return newPersonality;
+    });
+  };
+  
   return (
-    <FitnessContext.Provider value={{ fitnessData, updateSteps }}>
+    <FitnessContext.Provider value={{ 
+      fitnessData, 
+      updateSteps, 
+      coachMessage, 
+      coachPersonality, 
+      toggleCoachPersonality 
+    }}>
       {children}
     </FitnessContext.Provider>
   );
